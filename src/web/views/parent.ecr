@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100;0,300;0,400;0,500;0,700;1,100;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet"> 
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/sprite.css" />
+    <title>OSRS Labs</title>
+
+    <style>
+      body {
+        background: #241538;
+        color: #fefefe;
+        font-family: 'Roboto Mono', monospace;
+      }
+      .header
+      {
+        background: #3D2C53;
+        height: 40px;
+        text-align: center;
+      }
+
+      h1
+      {
+        font-weight: 300;
+        font-size: 18px;
+        line-height: 40px;
+      }
+
+      .skill {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+      }
+
+      .skill-icon
+      {
+        margin-right: 10px;
+      }
+
+      .skill-level {
+        font-family: Roboto Mono;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 12px;
+        line-height: 15px;
+        display:none;
+      }
+
+      .skill-level.s0 {
+        display:block;
+      }
+
+      .skill-xp {
+        font-family: Roboto Mono;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 8px;
+        line-height: 15px;
+        opacity: 50%;
+        display:none;
+      }
+
+      .skill-xp.s0 {
+        display:block;
+      }
+
+      .snapshot-date {
+        display:none;
+      }
+      .snapshot-date.s0 {
+        display:block;
+      }
+
+      .snapshot-selector {
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <h1>Tree Gnome Labs</h1>
+    </div>
+
+    <% render_template __io__ %>
+    
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script>
+      function updateSnaphot(index) {
+        $('.skill-xp, .skill-level, .snapshot-date').hide();
+        $('.s'+index).show();
+      }
+    </script>
+  </body>
+</html>

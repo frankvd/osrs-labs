@@ -1,0 +1,23 @@
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <h1><%= account.username %></h1>
+      <p>Total level: <%= last_snapshot.skills.overall.level %></p>
+    </div>
+  </div>
+  <div class="row">
+    <% last_snapshot.skills.to_a.each_with_index do |skill| %>
+      <div class="col-4 col-<%= skill.name.downcase %>">
+        <% render_skill __io__, skill.name %>
+      </div>
+    <% end %>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <% snapshots.each_with_index do |snapshot, i| %>
+        <p class="text-center snapshot-date s<%= -i %>"><%= snapshot.datetime.to_s %></p>
+      <% end %>
+      <input oninput="updateSnaphot(this.value)" onchange="updateSnaphot(this.value)" type="range" class="snapshot-selector" value="0" min="<%= -snapshots.size+1 %>" max="0" step="1" id="snapshot-selector">
+    </div>
+  </div>
+</div>

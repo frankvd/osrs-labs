@@ -1,0 +1,23 @@
+name: osrs-labs
+version: 0.1.0
+
+authors:
+  - your-name-here <your-email-here>
+
+targets:
+  cli:
+    main: src/cli/app.cr
+  web:
+    main: src/web/app.cr
+
+crystal: 0.32.1
+
+license: MIT
+
+dependencies:
+  rikki:
+    git: git@github.com:frankvd/rikki.git
+  clide:
+    git: git@github.com:frankvd/clide.git
+  sqlite3:
+    github: crystal-lang/crystal-sqlite3

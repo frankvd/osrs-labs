@@ -1,0 +1,5 @@
+require "csv"
+require "http"
+require "./hiscore_downloader"
+require "./hiscore_parser"
+require "./snapshot_service"

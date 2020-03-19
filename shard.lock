@@ -1,0 +1,18 @@
+version: 1.0
+shards:
+  clide:
+    git: git@github.com:frankvd/clide.git
+    commit: 56d61b03f756ace84e209c8913d2354719fef2b0
+
+  db:
+    github: crystal-lang/crystal-db
+    version: 0.8.0
+
+  rikki:
+    git: git@github.com:frankvd/rikki.git
+    commit: 3370bed7b3b84bb2602a3a6f60ec5ead2342707d
+
+  sqlite3:
+    github: crystal-lang/crystal-sqlite3
+    version: 0.15.0
+

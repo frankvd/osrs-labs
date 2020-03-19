@@ -1,0 +1,14 @@
+<div class="skill">
+    <div class="skill-icon <%= skill_name.downcase %>">
+    </div>
+    <div>
+        <% snapshots.each_with_index do |snapshot, i| %>
+            <div class="skill-level s<%= -i %>">
+                <%= snapshot.skills.get(skill_name).level %>
+            </div>
+            <div class="skill-xp s<%= -i %>">
+                <%= snapshot.skills.get(skill_name).xp.format %>
+            </div>
+        <% end %>
+    </div>
+</div>
