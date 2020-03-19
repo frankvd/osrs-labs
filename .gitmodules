@@ -1,0 +1,6 @@
+[submodule "submodules/rikki"]
+	path = submodules/rikki
+	url = git@github.com:frankvd/rikki.git
+[submodule "submodules/clide"]
+	path = submodules/clide
+	url = git@github.com:frankvd/clide.git
