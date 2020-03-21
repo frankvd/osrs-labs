@@ -5,6 +5,8 @@ require "option_parser"
 require "../osrs-labs"
 require "./commands/*"
 
+STDOUT.sync = true
+
 include OSRS::Labs::CLI::Commands
 include OSRS::Labs::Persistence
 include OSRS::Labs::Collection

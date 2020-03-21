@@ -9,6 +9,8 @@ require "./view"
 require "./views/account"
 require "./views/home"
 
+STDOUT.sync = true
+
 include OSRS::Labs::Persistence
 include OSRS::Labs::Core
 include OSRS::Labs::Web
