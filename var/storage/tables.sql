@@ -11,7 +11,6 @@ CREATE TABLE snapshots(
     FOREIGN KEY(account_id) REFERENCES accounts(id),
     UNIQUE(account_id, datetime)
 );
-CREATE INDEX snapshots_account_id_datetime ON snapshots(account_id, datetime);
 
 CREATE TABLE skills(
     id INTEGER PRIMARY KEY,
@@ -56,3 +55,6 @@ ALTER TABLE snapshots ADD COLUMN overall_xp INTEGER;
 ALTER TABLE snapshots ADD COLUMN overall_rank INTEGER;
 
 ALTER TABLE snapshot_skills ADD COLUMN rank INTEGER;
+
+ALTER TABLE accounts ADD COLUMN next_scheduled_update INTEGER;
+CREATE INDEX accounts_next_scheduled_update ON accounts(next_scheduled_update);

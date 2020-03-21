@@ -1,6 +1,7 @@
 module OSRS::Labs::Persistence
   abstract class SnapshotRepository
     abstract def find(account)
+    abstract def recent(limit)
     abstract def save(snapshot)
   end
 
@@ -18,28 +19,47 @@ module OSRS::Labs::Persistence
       snapshots = {} of Int32 => Core::Snapshot
       with_transaction do |tx|
         rows = tx.connection.query_all(
-          "SELECT s.id, overall_level, overall_xp, overall_rank, datetime FROM snapshots s JOIN accounts a on a.id = s.account_id WHERE a.username = ? ORDER BY datetime DESC",
+          "SELECT s.id, overall_level, overall_xp, overall_rank, datetime, username, next_scheduled_update FROM snapshots s JOIN accounts a on a.id = s.account_id WHERE a.username = ? ORDER BY datetime DESC",
           account.username,
-          as: {id: Int32, overall_level: Int32, overall_xp: Int32, overall_rank: Int32, datetime: Int64}
+          as: {id: Int32, overall_level: Int32, overall_xp: Int32, overall_rank: Int32, datetime: Int64, username: String, next_scheduled_update: Int64}
         )
 
-        rows.each do |r|
-          snapshots[r[:id]] = Core::Snapshot.new  account, Time.unix(r[:datetime])
-          snapshots[r[:id]].skills.overall.level = r[:overall_level]
-          snapshots[r[:id]].skills.overall.xp = r[:overall_xp]
-          snapshots[r[:id]].skills.overall.rank = r[:overall_rank]
-        end
+        fill_snapshots tx, snapshots, rows
+      end
 
-        ids = rows.map(&.[] :id).join(",")
-        skills = tx.connection.query_all(
-          "SELECT snapshot_id, skill_name, xp, rank FROM snapshot_skills ss JOIN skills s on s.id = ss.skill_id WHERE snapshot_id IN(" + ids + ")",
-          as: {snapshot_id: Int32, skill: String, xp: Int32, rank: Int32}
+      snapshots.values
+    end
+
+    protected def fill_snapshots(tx, snapshots, rows)
+      rows.each do |r|
+        snapshots[r[:id]] = Core::Snapshot.new  Account.new(r[:username], Time.unix(r[:next_scheduled_update])), Time.unix(r[:datetime])
+        snapshots[r[:id]].skills.overall.level = r[:overall_level]
+        snapshots[r[:id]].skills.overall.xp = r[:overall_xp]
+        snapshots[r[:id]].skills.overall.rank = r[:overall_rank]
+      end
+
+      ids = rows.map(&.[] :id).join(",")
+      skills = tx.connection.query_all(
+        "SELECT snapshot_id, skill_name, xp, rank FROM snapshot_skills ss JOIN skills s on s.id = ss.skill_id WHERE snapshot_id IN(" + ids + ")",
+        as: {snapshot_id: Int32, skill: String, xp: Int32, rank: Int32}
+      )
+
+      skills.each do |skill|
+        snapshots[skill[:snapshot_id]].skills.to_h[skill[:skill]].xp = skill[:xp]
+        snapshots[skill[:snapshot_id]].skills.to_h[skill[:skill]].rank = skill[:rank]
+      end
+    end
+
+    def recent(limit = 10)
+      snapshots = {} of Int32 => Core::Snapshot
+      with_transaction do |tx|
+        rows = tx.connection.query_all(
+          "SELECT s.id, overall_level, overall_xp, overall_rank, datetime, username, next_scheduled_update FROM snapshots s JOIN accounts a on a.id = s.account_id ORDER BY datetime DESC LIMIT ?",
+          limit,
+          as: {id: Int32, overall_level: Int32, overall_xp: Int32, overall_rank: Int32, datetime: Int64, username: String, next_scheduled_update: Int64}
         )
 
-        skills.each do |skill|
-          snapshots[skill[:snapshot_id]].skills.to_h[skill[:skill]].xp = skill[:xp]
-          snapshots[skill[:snapshot_id]].skills.to_h[skill[:skill]].rank = skill[:rank]
-        end
+        fill_snapshots tx, snapshots, rows
       end
 
       snapshots.values

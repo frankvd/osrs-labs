@@ -1,9 +1,11 @@
 class OSRS::Labs::Collection::SnapshotService
+  property :account_repository
   property :snapshot_repository
   property :hiscore_parser
   property :hiscore_downloader
 
   def initialize(
+    @account_repository : AccountRepository,
     @snapshot_repository : SnapshotRepository,
     @hiscore_parser : HiscoreParser,
     @hiscore_downloader : HiscoreDownloader
@@ -20,6 +22,22 @@ class OSRS::Labs::Collection::SnapshotService
       snapshot_repository.save new_snapshot
     end
 
+    account.next_scheduled_update = new_snapshot.datetime + 4.hours
+    account_repository.save account
+
     new_snapshot
+  end
+
+  def create_next_snapshot(force_save = false)
+    account = account_repository.find_next_to_update
+    return nil if account.nil?
+
+    create_snapshot account, force_save
+  end
+
+  def create_next_snapshots(n, force_save = false)
+    n.times do
+      create_next_snapshot force_save
+    end
   end
 end

@@ -7,6 +7,7 @@ require "option_parser"
 require "../osrs-labs"
 require "./view"
 require "./views/account"
+require "./views/home"
 
 include OSRS::Labs::Persistence
 include OSRS::Labs::Core
@@ -32,6 +33,12 @@ snapshot_repository = SQLSnapshotRepository.new "sqlite3://" + db_file
 router = Rikki::Router.new
 
 router.with [HTTP::ErrorHandler.new, HTTP::LogHandler.new] do
+  get "/" do |context|
+    snapshots = snapshot_repository.recent
+    context.response.content_type = "text/html"
+    context.response.print HomeView.new(snapshots)
+  end
+
   get "/account/:username" do |context, params|
     account = Account.new URI.unescape(params["username"])
     snapshots = snapshot_repository.find account
