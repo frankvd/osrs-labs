@@ -42,7 +42,7 @@ router.with [HTTP::ErrorHandler.new, HTTP::LogHandler.new] do
   end
 
   get "/account/:username" do |context, params|
-    account = Account.new URI.unescape(params["username"])
+    account = Account.new URI.decode(params["username"])
     snapshots = snapshot_repository.find account
 
     context.response.content_type = "text/html"

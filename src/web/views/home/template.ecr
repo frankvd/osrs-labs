@@ -4,7 +4,7 @@
       <h3>Recent updates</h3>
       <% recent_snapshots.each do |snapshot| %>
         <div class="row">
-          <div class="col-4 recent-username"><a href="/account/<%= URI.escape snapshot.account.username %>"><%= snapshot.account.username %></a></div>
+          <div class="col-4 recent-username"><a href="/account/<%= URI.encode snapshot.account.username %>"><%= snapshot.account.username %></a></div>
           <div class="col-4 recent-overall-level">
             <img src="/Stats_icon.png" />
             <%= snapshot.skills.overall.level %>

@@ -1,17 +1,14 @@
-FROM crystallang/crystal:0.32.1
+FROM crystallang/crystal:0.33.0-alpine
 
 ADD . /
 WORKDIR /
-RUN apt-get update
-RUN apt-get install -y libsqlite3-dev
-RUN shards build --release
+RUN apk update
+RUN apk add sqlite-static sqlite-dev
+RUN shards build --release --static
 
-RUN ldd ./bin/web | tr -s '[:blank:]' '\n' | grep '^/' | \
-   xargs -I % sh -c 'mkdir -p $(dirname deps%); cp % deps%;'
-
-FROM busybox
+FROM scratch
 COPY --from=0 /assets /assets
-COPY --from=0 /deps /
 COPY --from=0 /bin /
+COPY --from=0 /etc/ssl /etc/ssl
 
 ENTRYPOINT ["/web", "-a", "/assets", "-d", "/var/data/osrs.db", "-p", "5000"]

@@ -30,7 +30,7 @@ module OSRS::Labs::Persistence
     def find_next_to_update
       result = nil
       with_transaction do |tx|
-        result = tx.connection.query_one?("SELECT username, next_scheduled_update FROM accounts WHERE next_scheduled_update < ? OR next_scheduled_update = 0 ORDER BY next_scheduled_update ASC LIMIT 1", Time.now.to_unix, as: {username: String, next_scheduled_update: Int64})
+        result = tx.connection.query_one?("SELECT username, next_scheduled_update FROM accounts WHERE next_scheduled_update < ? OR next_scheduled_update = 0 ORDER BY next_scheduled_update ASC LIMIT 1", Time.utc.to_unix, as: {username: String, next_scheduled_update: Int64})
       end
       return nil if result.nil?
       row = result.as({username: String, next_scheduled_update: Int64})
