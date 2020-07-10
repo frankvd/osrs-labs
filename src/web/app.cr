@@ -34,7 +34,7 @@ snapshot_repository = SQLSnapshotRepository.new "sqlite3://" + db_file
 
 router = Rikki::Router.new
 
-router.with [HTTP::ErrorHandler.new, HTTP::LogHandler.new] do
+router.configure do
   get "/" do |context|
     snapshots = snapshot_repository.recent
     context.response.content_type = "text/html"
@@ -44,15 +44,24 @@ router.with [HTTP::ErrorHandler.new, HTTP::LogHandler.new] do
   get "/account/:username" do |context, params|
     account = Account.new URI.decode(params["username"])
     snapshots = snapshot_repository.find account
-
-    context.response.content_type = "text/html"
-    context.response.print AccountView.new(account, snapshots)
+    if snapshots.empty?
+      context.response.status = :not_found
+      context.response.print "404 Not Found"
+    else
+      context.response.content_type = "text/html"
+      context.response.print AccountView.new(account, snapshots)
+    end
   end
 end
 
 print router
 
-server = HTTP::Server.new [ HTTP::StaticFileHandler.new(asset_root, true, false), Rikki::RouterHandler.new(router)]
+server = HTTP::Server.new [
+  HTTP::ErrorHandler.new,
+  HTTP::LogHandler.new,
+  HTTP::StaticFileHandler.new(asset_root, true, false),
+  Rikki::RouterHandler.new(router)
+]
 
 addr = server.bind_tcp "0.0.0.0", port
 puts "Listening on http://#{addr}"
