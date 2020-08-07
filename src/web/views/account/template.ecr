@@ -2,7 +2,6 @@
   <div class="row">
     <div class="col-12">
       <h1><%= account.username %></h1>
-      <p>Total level: <%= last_snapshot.skills.overall.level %></p>
     </div>
   </div>
   <div class="row">
@@ -11,6 +10,22 @@
         <% render_skill __io__, skill.name %>
       </div>
     <% end %>
+    <div class="col-4 col-overall %>">
+        <div class="skill">
+          <div class="skill-icon overall">
+          </div>
+          <div>
+              <% snapshots.each_with_index do |snapshot, i| %>
+                  <div class="skill-level s<%= -i %>">
+                      <%= snapshot.skills.overall.level %>
+                  </div>
+                  <div class="skill-xp s<%= -i %>">
+                      <%= snapshot.skills.overall.xp.format %>
+                  </div>
+              <% end %>
+          </div>
+      </div>
+      </div>
   </div>
   <div class="row">
     <div class="col-12">
