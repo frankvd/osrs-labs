@@ -15,12 +15,13 @@ module OSRS::Labs::Persistence
       end
     end
 
-    def find(account)
+    def find(account, limit = 100)
       snapshots = {} of Int32 => Core::Snapshot
       with_transaction do |tx|
         rows = tx.connection.query_all(
-          "SELECT s.id, overall_level, overall_xp, overall_rank, datetime, username, next_scheduled_update FROM snapshots s JOIN accounts a on a.id = s.account_id WHERE a.username = ? ORDER BY datetime DESC",
+          "SELECT s.id, overall_level, overall_xp, overall_rank, datetime, username, next_scheduled_update FROM snapshots s JOIN accounts a on a.id = s.account_id WHERE a.username = ? ORDER BY datetime DESC LIMIT ?",
           account.username,
+          limit,
           as: {id: Int32, overall_level: Int32, overall_xp: Int32, overall_rank: Int32, datetime: Int64, username: String, next_scheduled_update: Int64}
         )
 
