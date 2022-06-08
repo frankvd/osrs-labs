@@ -12,7 +12,7 @@ include OSRS::Labs::Persistence
 include OSRS::Labs::Collection
 
 db_file = __DIR__ + "/../../var/storage/osrs.db"
-OptionParser.parse! do |opts|
+OptionParser.parse do |opts|
   opts.on("-d FILE", "--database FILE", "sqlite database file") do |opt|
     db_file = opt.to_s
   end

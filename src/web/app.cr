@@ -18,7 +18,7 @@ include OSRS::Labs::Web
 db_file = __DIR__ + "/../../var/storage/osrs.db"
 asset_root = __DIR__ + "/../../assets"
 port = 8080
-OptionParser.parse! do |opts|
+OptionParser.parse do |opts|
   opts.on("-p PORT", "--port PORT", "define port to run server") do |opt|
     port = opt.to_i
   end
