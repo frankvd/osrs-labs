@@ -10,6 +10,6 @@ FROM scratch
 COPY --from=0 /assets /assets
 COPY --from=0 /bin /
 COPY --from=0 /etc/ssl /etc/ssl
-ADD ./app.json /app/
+ADD ./app.json /
 
 CMD ["/web", "-a", "/assets", "-d", "/var/data/osrs.db", "-p", "5000"]
