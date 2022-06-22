@@ -1,0 +1,8 @@
+{
+    "cron": [
+      {
+        "command": "/cli create-snapshot -d /var/data/osrs.db",
+        "schedule": "* * * * *"
+      }
+    ]
+  }
