@@ -58,3 +58,4 @@ ALTER TABLE snapshot_skills ADD COLUMN rank INTEGER;
 
 ALTER TABLE accounts ADD COLUMN next_scheduled_update INTEGER;
 CREATE INDEX accounts_next_scheduled_update ON accounts(next_scheduled_update);
+CREATE INDEX snapshots_datetime ON snapshots(datetime);
