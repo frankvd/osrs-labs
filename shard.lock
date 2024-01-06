@@ -1,18 +1,18 @@
 version: 2.0
 shards:
   clide:
-    path: ./submodules/clide
-    version: 0.1.0
+    git: https://github.com/frankvd/clide.git
+    version: 0.2.0+git.commit.57e5240910a52cbe1da0ae529ce45a100f8cf15e
 
   db:
     git: https://github.com/crystal-lang/crystal-db.git
-    version: 0.10.1
+    version: 0.13.1
 
   rikki:
-    path: ./submodules/rikki
-    version: 0.1.0
+    git: https://github.com/frankvd/rikki.git
+    version: 0.1.0+git.commit.a5f5f9c584d16b7872b5ab2e64b4a6af54ae00ba
 
   sqlite3:
     git: https://github.com/crystal-lang/crystal-sqlite3.git
-    version: 0.18.0
+    version: 0.21.0
 

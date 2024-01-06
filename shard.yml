@@ -16,8 +16,8 @@ license: MIT
 
 dependencies:
   rikki:
-    path: ./submodules/rikki
+    github: frankvd/rikki
   clide:
-    path: ./submodules/clide
+    github: frankvd/clide
   sqlite3:
     github: crystal-lang/crystal-sqlite3
